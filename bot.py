@@ -12,8 +12,8 @@ import logging
 logging.basicConfig(level=logging.INFO)
 
 load_dotenv()
-DISCORD_TOKEN = os.getenv('DISCORD_TOKEN')
-STARTGG_TOKEN = os.getenv('STARTGG_TOKEN')
+DISCORD_TOKEN = os.getenv('BALROG_DISCORD_TOKEN')
+STARTGG_TOKEN = os.getenv('BALROG_STARTGG_TOKEN')
 
 intents = discord.Intents.default()
 intents.message_content = True
