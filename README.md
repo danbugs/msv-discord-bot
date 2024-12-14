@@ -16,11 +16,11 @@ A Discord bot that automates the management of Microspacing Vancouver (MSV) even
 
 ## Administrator Commands
 
-- **`!set_current_event <url>`**
+- **`!set_current_event <url>`** (must be admin)
   - **Description**: Sets the current event Start.gg URL that the bot will monitor.
   - **Usage**: `!set_current_event https://www.start.gg/tournament/microspacing-vancouver-77/event/ultimate-singles`
 
-- **`!set_attendee_cap <number>`**
+- **`!set_attendee_cap <number>`** (must be admin)
   - **Description**: Sets the maximum number of entrants for the current event (default: 32).
   - **Usage**: `!set_attendee_cap 40`
 
@@ -28,22 +28,22 @@ A Discord bot that automates the management of Microspacing Vancouver (MSV) even
   - **Description**: Displays the current event details, including URL, attendee cap, and whether the bot’s operations are currently canceled.
   - **Usage**: `!check_current_event`
 
-- **`!cancel_run`**
+- **`!cancel_run`** (must be admin)
   - **Description**: Cancels the bot's operations until resumed.
   - **Usage**: `!cancel_run`
 
-- **`!resume_run`**
+- **`!resume_run`** (must be admin)
   - **Description**: Resumes the bot's operations after a cancellation.
   - **Usage**: `!resume_run`
 
-- `!test`
+- **`!test`** (must be admin)
   - **Description**: Simulates the bot's functionality for testing purposes:
     - Locks the previous waitlist post (if any).
     - Posts the announcement to a test channel.
     - Creates a waitlist thread in a test channel.
   - **Usage**: `!test`
 
-- `!clean_previous_post`
+- **`!clean_previous_post`** (must be admin)
   - **Description**: Cleans up the bot's reference to the previous waitlist post, ensuring test runs do not affect actual operations.
   - **Usage**: `!clean_previous_post`
 
