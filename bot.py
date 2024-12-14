@@ -185,9 +185,6 @@ async def resume_run(ctx):
 @bot.command()
 @commands.has_permissions(administrator=True)
 async def clean_previous_post(ctx):
-    """
-    Cleans the `previous_post` reference to avoid conflicts between test and actual runs.
-    """
     try:
         if bot.previous_post:
             bot.previous_post = None
@@ -200,12 +197,6 @@ async def clean_previous_post(ctx):
 @bot.command()
 @commands.has_permissions(administrator=True)
 async def test(ctx):
-    """
-    Tests the following functionality:
-    - Locks the previous waitlist post (if any).
-    - Posts the announcement in a designated test channel.
-    - Creates a waitlist post in a designated test channel.
-    """
     try:
         # Lock the previous waitlist post (if any)
         if bot.previous_post:
@@ -221,7 +212,7 @@ async def test(ctx):
         test_announcement_channel = bot.get_channel(1317322763043864616)  # Replace with your test announcement channel ID
         if test_announcement_channel:
             await test_announcement_channel.send(
-                f"@everyone ~ registration for next week's event is open! (TEST MODE)\n\n"
+                f"@/everyone ~ registration for next week's event is open! (TEST MODE)\n\n"
                 f"- {bot.attendee_cap} player cap.\n"
                 f"- public reg goes out tomorrow at 8:30AM (if cap isn't hit).\n"
                 f"- for venue access, see: #how-to-get-to-the-venue .\n"
@@ -245,7 +236,7 @@ async def test(ctx):
                 "Please, let me know if you are bringing a setup. For example, 'TestUser setup'"
             )
             new_thread = await test_waitlist_channel.create_thread(name=title, content=content)
-            bot.previous_post = new_thread  # Update the previous post for testing
+            bot.previous_post = new_thread.thread  # Update the previous post for testing
             await ctx.send("Test waitlist thread created successfully.")
 
         await ctx.send("All test operations completed successfully.")
