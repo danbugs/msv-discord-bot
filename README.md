@@ -24,3 +24,5 @@ A Discord bot that automates the management for Microspacing Vancouver (MSV) eve
 - **`!set_event_number <number>`**
   - **Description**: Manually sets the current event number.
   - **Usage**: `!set_event_number 70`
+
+> Note to self: The StartGG token this bot uses (i.e., `waitlist-bot` in Dantotto profile) was created around October 2024, the token should be updated around August 2025 at the latest by changing the `.env` file in the deployed Ubuntu server and re-running pm2 (`pm2 restart 6 --update-env`).
