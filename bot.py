@@ -183,9 +183,80 @@ async def resume_run(ctx):
     await ctx.send('The bot has been resumed.')
 
 @bot.command()
+@commands.has_permissions(administrator=True)
+async def clean_previous_post(ctx):
+    """
+    Cleans the `previous_post` reference to avoid conflicts between test and actual runs.
+    """
+    try:
+        if bot.previous_post:
+            bot.previous_post = None
+            await ctx.send("Previous post reference cleared successfully.")
+        else:
+            await ctx.send("No previous post reference to clean.")
+    except Exception as e:
+        await ctx.send(f"An error occurred while cleaning previous post reference: {e}")
+
+@bot.command()
+@commands.has_permissions(administrator=True)
+async def test(ctx):
+    """
+    Tests the following functionality:
+    - Locks the previous waitlist post (if any).
+    - Posts the announcement in a designated test channel.
+    - Creates a waitlist post in a designated test channel.
+    """
+    try:
+        # Lock the previous waitlist post (if any)
+        if bot.previous_post:
+            await bot.previous_post.edit(locked=True)
+            await bot.previous_post.send(
+                "Waitlist locked (test mode). A new one will be created once the next event caps."
+            )
+            await ctx.send("Previous waitlist locked successfully (test mode).")
+        else:
+            await ctx.send("No previous waitlist post to lock (test mode).")
+
+        # Post the announcement in a test channel
+        test_announcement_channel = bot.get_channel(1317322763043864616)  # Replace with your test announcement channel ID
+        if test_announcement_channel:
+            await test_announcement_channel.send(
+                f"@everyone ~ registration for next week's event is open! (TEST MODE)\n\n"
+                f"- {bot.attendee_cap} player cap.\n"
+                f"- public reg goes out tomorrow at 8:30AM (if cap isn't hit).\n"
+                f"- for venue access, see: #how-to-get-to-the-venue .\n"
+                f"- **:warning: BRING YOUR NINTENDO SWITCHES (DOCK, CONSOLE, POWER CABLE, AND HDMI) WITH GAME CUBE ADAPTERS :warning:** "
+                f"(running Swiss is dependent on having at least 20 setups; otherwise, we'll do normal Redemption). We've got monitors.\n"
+                f"- if you are trying to register, but we’ve already reached the cap, please drop your StartGG tag "
+                f"(and say if you can bring a setup) at #add-me-to-the-waitlist once it opens. Are you from out-of-region? If so, you have priority in the waitlist!\n\n"
+                f"PS If you can’t bring a full setup, but would still like to contribute, _please bring your GCC adapter_. "
+                f"There are some people that can bring full setups but only play w/ pro cons., so it’s always best to have extras.\n\n"
+                f"https://www.start.gg/{bot.current_event_slug or 'test-event'}"
+            )
+            await ctx.send("Test announcement posted successfully.")
+
+        # Create a new waitlist post in a test channel
+        test_waitlist_channel = bot.get_channel(1317322581938016317)  # Replace with your test waitlist channel ID
+        if test_waitlist_channel:
+            title = f"Waitlist for {bot.current_event_slug or 'Test Event'} (TEST MODE)"
+            content = (
+                "Answer in the thread if you'd like to be added to the waitlist! (TEST MODE)\n\n"
+                "Top 8 of this waitlist get priority registration for next week. "
+                "Please, let me know if you are bringing a setup. For example, 'TestUser setup'"
+            )
+            new_thread = await test_waitlist_channel.create_thread(name=title, content=content)
+            bot.previous_post = new_thread  # Update the previous post for testing
+            await ctx.send("Test waitlist thread created successfully.")
+
+        await ctx.send("All test operations completed successfully.")
+
+    except Exception as e:
+        await ctx.send(f"An error occurred during the test: {e}")    
+
+@bot.command()
 async def roll_dice(ctx):
     import random
     result = random.randint(1, 6)
-    await ctx.send(f'🎲 You rolled a {result}!')
+    await ctx.send(f'🎲 You rolled a {result}!')    
 
 bot.run(DISCORD_TOKEN)
