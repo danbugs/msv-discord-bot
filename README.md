@@ -12,6 +12,7 @@ A Discord bot that automates the management of Microspacing Vancouver (MSV) even
 - **Locks Previous Threads**: Locks the previous waitlist thread every Tuesday, notifying users with a message that a new one will be created once the next event caps.
 - **Announcements**: Posts an announcement every Wednesday morning, providing registration details and encouraging attendees to bring setups.
 - **Administrator Commands**: Provides commands for admins to control and configure the bot's behavior.
+- **Testing and Cleanup**: Includes commands for testing the bot's functionality and resetting its state for accurate operation.
 
 ## Administrator Commands
 
@@ -34,6 +35,17 @@ A Discord bot that automates the management of Microspacing Vancouver (MSV) even
 - **`!resume_run`**
   - **Description**: Resumes the bot's operations after a cancellation.
   - **Usage**: `!resume_run`
+
+- `!test`
+  - **Description**: Simulates the bot's functionality for testing purposes:
+    - Locks the previous waitlist post (if any).
+    - Posts the announcement to a test channel.
+    - Creates a waitlist thread in a test channel.
+  - **Usage**: `!test`
+
+- `!clean_previous_post`
+  - **Description**: Cleans up the bot's reference to the previous waitlist post, ensuring test runs do not affect actual operations.
+  - **Usage**: `!clean_previous_post`
 
 ## Other Features
 
