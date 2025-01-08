@@ -35,6 +35,9 @@ async def on_ready():
 
     # Set up the scheduler to run every Tuesday at 8:30 AM PST for locking previous posts
     pst = pytz.timezone('America/Los_Angeles')
+
+    scheduler.remove_all_jobs()
+
     scheduler.add_job(
         lock_previous_post,
         CronTrigger(day_of_week='tue', hour=8, minute=30, timezone=pst)
