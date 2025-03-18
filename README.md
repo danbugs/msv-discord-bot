@@ -5,16 +5,7 @@
 
 A Discord bot that automates the management of Microspacing Vancouver (MSV) events.
 
-## What the Bot Does
-
-- **Monitors Event Registrations**: Checks the number of entrants for MSV events on Start.gg using a configurable event URL.
-- **Creates Waitlist Threads**: Automatically creates a new waitlist thread in the MSV Discord server when the entrant cap is reached (default: 32, but configurable).
-- **Locks Previous Threads**: Locks the previous waitlist thread every Tuesday, notifying users with a message that a new one will be created once the next event caps.
-- **Announcements**: Posts an announcement every Wednesday morning, providing registration details and encouraging attendees to bring setups.
-- **Administrator Commands**: Provides commands for admins to control and configure the bot's behavior.
-- **Testing and Cleanup**: Includes commands for testing the bot's functionality and resetting its state for accurate operation.
-
-## Administrator Commands
+## Commands
 
 - **`!set_current_event <url>`** (must be admin)
   - **Description**: Sets the current event Start.gg URL that the bot will monitor.
@@ -32,9 +23,23 @@ A Discord bot that automates the management of Microspacing Vancouver (MSV) even
   - **Description**: Cancels the bot's operations until resumed.
   - **Usage**: `!cancel_run`
 
-- **`!resume_run`** (must be admin)
-  - **Description**: Resumes the bot's operations after a cancellation.
-  - **Usage**: `!resume_run`
+- **`!set_reg_time`** (must be admin)
+  - **Description**: Sets the time for the weekly announcement. The default is set to *;30 AM on Wednesdays.
+  - **Usage**: `!set_reg_time wed_8_30` (for Wednesday, 8:30 AM)
+
+- **`!do_pre_tournament_setup`** (must be admin)
+  - **Description**: Performs the pre-tournament setup, including:
+    - Locking the previous waitlist post.
+    - Creating necessary threads (pri. reg., top 8, dropping out, etc.)
+  - **Usage**: `!do_pre_tournament_setup`
+
+- **`!quote`**
+  - **Description**: Displays a random quote from a public channel in the server.
+    - **Usage**: `!quote`
+
+- **`!thanks`**
+  - **Description**: Displays a random "You're welcome!"-like message.
+    - **Usage**: `!thanks`
 
 - **`!test`** (must be admin)
   - **Description**: Simulates the bot's functionality for testing purposes:
@@ -43,20 +48,42 @@ A Discord bot that automates the management of Microspacing Vancouver (MSV) even
     - Creates a waitlist thread in a test channel.
   - **Usage**: `!test`
 
-- **`!clean_previous_post`** (must be admin)
-  - **Description**: Cleans up the bot's reference to the previous waitlist post, ensuring test runs do not affect actual operations.
-  - **Usage**: `!clean_previous_post`
+- **`!roll_dice`**
+  - **Description**: Rolls a random number between 1 and 6.
+  - **Usage**: `!roll_dice`
+
+- **`!who_is_da_goat`**
+  - **Description**: Picks a random member from the server and declares them the "Greatest of All Time" (GOAT).
+  - **Usage**: `!who_is_the_goat`
+
+- **`!batch`** (must be admin)
+  - **Description**: Batch a bunch of commands together to be executed serially and stop if any fail.
+  - **Usage**:
+  ```
+  !batch {
+  !check_current_event
+  !set_current_event https://www.start.gg/tournament/macrospacing-vancouver-5-battle-of-bc-7-monday-pre-local/event/ultimate-singles
+
+  !set_attendee_cap 64
+  !set_reg_time wed_8_30
+
+  !check_current_event
+  }
+  ```
+  
+- **`!yes_or_no`**
+  - **Description**: Randomly responds with "yes" or "no".
+  - **Usage**: `!yes_or_no`
 
 ## Other Features
 
-- **Weekly Announcements**: Posts a detailed registration announcement in a dedicated channel every Wednesday morning.
-- **Automatic Thread Management**: Locks previous waitlist threads and creates new ones dynamically based on event registration status.
-- **Fun Additions**: Includes a `!roll_dice` command for entertainment, rolling a random number between 1 and 6.
+- **Weekly Announcements**: Posts a detailed registration announcement in a dedicated channel when scheduled.
+- **Random posts**: Randomly posts pre-determined messages in general.
 
 ## Note on Tokens and Deployment
 
 The Start.gg token this bot uses (i.e., `waitlist-bot` in the Dantotto profile) was created around October 2024. The token should be updated around August 2025 at the latest by changing the `.env` file in the deployed Ubuntu server and re-running PM2 with the following command:
 
 ```bash
-pm2 restart 6 --update-env
+pm2 restart <some num> --update-env
 ```
