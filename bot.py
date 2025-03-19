@@ -82,7 +82,7 @@ async def lock_all_threads_in_channel(ctx, channel_id):
             await ctx.send(f"Locked thread: {thread.name}")
             locked_count += 1
 
-    await ctx.send(f"✅ Locked {locked_count} thread(s) in that forum channel.")
+    await ctx.send(f"✅ Locked {locked_count} thread(s) in **{forum_channel.name}**.")
 
 def shorten_slug(slug: str) -> str:
     # Example slug: tournament/microspacing-vancouver-87/event/ultimate-singles
@@ -157,7 +157,7 @@ async def do_pre_tournament_setup(ctx):
         else:
             await ctx.send("Priority registration channel not found.")
 
-        await ctx.send("All lock and thread creation operations completed successfully. Don't forget to lock old remaining threads!")
+        await ctx.send("All lock and thread creation operations completed successfully!")
 
     except Exception as e:
         await ctx.send(f"An error occurred during lock and thread creation: {e}")
@@ -427,6 +427,15 @@ async def random_general_messages():
         "The setups don't set themselves up 😏",
         "Shoutout to everyone grinding! 🫡"
     ]
+
+    # Send a message on startup
+    if general_channel:
+        try:
+            await general_channel.send(random.choice(random_messages))
+        except Exception as e:
+            print(f"Failed to send random startup message: {e}")
+
+    # Continue the normal random loop
     while not bot.is_closed():
         wait_time = random.randint(48 * 60 * 60, 72 * 60 * 60)  # between 48 and 72 hours
         await asyncio.sleep(wait_time)
