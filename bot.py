@@ -10,23 +10,6 @@ import pytz
 import logging
 import random
 
-import threading
-from flask import Flask
-
-# Dummy web server to keep Azure App Service alive
-app = Flask('')
-
-@app.route('/')
-def home():
-    return "Bot is running!"
-
-def run():
-    app.run(host='0.0.0.0', port=8080)
-
-threading.Thread(target=run).start()
-
-logging.basicConfig(level=logging.INFO)
-
 load_dotenv()
 DISCORD_TOKEN = os.getenv('BALROG_DISCORD_TOKEN')
 STARTGG_TOKEN = os.getenv('BALROG_STARTGG_TOKEN')
@@ -43,9 +26,9 @@ DEFAULT_ATTENDEE_CAP = 32
 async def on_ready():
     print(f'Logged in as {bot.user}')
 
-#     if not hasattr(bot, "random_message_task_started"):
-#         bot.loop.create_task(random_general_messages())
-#         bot.random_message_task_started = True
+    if not hasattr(bot, "random_message_task_started"):
+        bot.loop.create_task(random_general_messages())
+        bot.random_message_task_started = True
 
     # Initialize bot variables
     bot.current_event_slug = None
@@ -441,13 +424,6 @@ async def random_general_messages():
         "The setups don't set themselves up 😏",
         "Shoutout to everyone grinding! 🫡"
     ]
-
-    # Send a message on startup
-    if general_channel:
-        try:
-            await general_channel.send(random.choice(random_messages))
-        except Exception as e:
-            print(f"Failed to send random startup message: {e}")
 
     # Continue the normal random loop
     while not bot.is_closed():
