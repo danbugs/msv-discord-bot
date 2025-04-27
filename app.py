@@ -43,9 +43,9 @@ DEFAULT_ATTENDEE_CAP = 32
 async def on_ready():
     print(f'Logged in as {bot.user}')
 
-    if not hasattr(bot, "random_message_task_started"):
-        bot.loop.create_task(random_general_messages())
-        bot.random_message_task_started = True
+#     if not hasattr(bot, "random_message_task_started"):
+#         bot.loop.create_task(random_general_messages())
+#         bot.random_message_task_started = True
 
     # Initialize bot variables
     bot.current_event_slug = None
