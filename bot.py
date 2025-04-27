@@ -10,6 +10,20 @@ import pytz
 import logging
 import random
 
+import threading
+from flask import Flask
+
+# Dummy web server to keep Azure App Service alive
+app = Flask('')
+
+@app.route('/')
+def home():
+    return "Bot is running!"
+
+def run():
+    app.run(host='0.0.0.0', port=8080)
+
+threading.Thread(target=run).start()
 
 logging.basicConfig(level=logging.INFO)
 
